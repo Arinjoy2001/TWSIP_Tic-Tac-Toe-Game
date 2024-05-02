@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Function to print the Tic Tac Toe board
+void printBoard(const vector<string>& board) {
+    for (const string& row : board) {
+        cout << row << endl;
+    }
+}
+
+// Function to check if the game is over
+bool gameOver(const vector<string>& board, char& winner) {
+    // Check rows
+    for (int i = 0; i < 3; ++i) {
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != '.') {
+            winner = board[i][0];
+            return true;
+        }
+    }
+    // Check columns
+    for (int i = 0; i < 3; ++i) {
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != '.') {
+            winner = board[0][i];
+            return true;
+        }
+    }
+    // Check diagonals
+    if ((board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != '.') ||
+        (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '.')) {
+        winner = board[1][1];
+        return true;
+    }
+    // Check for draw
+    bool draw = true;
+    for (const string& row : board) {
+        for (char cell : row) {
+            if (cell == '.') {
+                draw = false;
+                break;
+            }
+        }
+        if (!draw) break;
+    }
+    if (draw) {
+        winner = '.';
+        return true;
+    }
+    return false;
+}
+
+// Function to check if the move is valid
+bool isValidMove(const vector<string>& board, int move) {
+    return move >= 0 && move < 9 && board[move / 3][move % 3] == '.';
+}
+
+// Function to perform player move
+void playerMove(vector<string>& board, char currentPlayer) {
+    int move;
+    do {
+        cout << "Player " << currentPlayer << ", enter your move (0-8): ";
+        cin >> move;
+    } while (!isValidMove(board, move));
+    board[move / 3][move % 3] = currentPlayer;
+}
+
+int main() {
+    vector<string> board = {"...", "...", "..."};
+    char currentPlayer = 'X';
+    char winner = '.';
+    while (!gameOver(board, winner)) {
+        printBoard(board);
+        playerMove(board, currentPlayer);
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+    }
+    printBoard(board);
+    if (winner == '.') {
+        cout << "It's a draw!" << endl;
+    } else {
+        cout << "Player " << winner << " wins!" << endl;
+    }
+    return 0;
+}
