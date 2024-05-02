@@ -1,1 +1,1 @@
-# TWSIP_Tic-Tac-Toe-Game
+This implementation is slightly different . It uses a vector of strings to represent the board, where each string represents a row. The cells are represented by characters ('X', 'O', or '.') instead of individual vectors. Additionally, the player inputs a single number (0-8) instead of row and column coordinates.
